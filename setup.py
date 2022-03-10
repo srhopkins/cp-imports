@@ -13,6 +13,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url='https://github.com/srhopkins/cp-imports',
     license='MIT',
-    packages=['toolbox'],
+    packages=['cp-imports'],
     install_requires=[],
 )
