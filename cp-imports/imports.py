@@ -53,24 +53,30 @@ parser.add_argument("-l", "--logging-level", help="execution logging level", def
 parser.add_argument("-m", "--mermaid", help="output mermaid graph", action=argparse.BooleanOptionalAction, default=False)
 parser.add_argument("-o", "--open-mermaid", help="open mermaid graph in browser", action=argparse.BooleanOptionalAction, default=False)
 
-args = parser.parse_args()
 
-logging.basicConfig(level=args.logging_level.upper())
-logger = logging.getLogger(__name__)
+def main():
+    args = parser.parse_args()
 
-logger.debug(args)
+    logging.basicConfig(level=args.logging_level.upper())
+    logger = logging.getLogger(__name__)
 
-output, mermaid = walk_imports(args.stack)
+    logger.debug(args)
 
-mermaid_diagram = f'flowchart {args.flowchart}\n'
-for row in mermaid:
-    mermaid_diagram += f'    {row}\n'
+    output, mermaid = walk_imports(args.stack)
 
-if args.mermaid:
-    print(mermaid_diagram)
-else:
-    print('\n'.join(output))
+    mermaid_diagram = f'flowchart {args.flowchart}\n'
+    for row in mermaid:
+        mermaid_diagram += f'    {row}\n'
 
-if args.open_mermaid:
-    b64_mermaid = base64.b64encode(mermaid_diagram.encode("ascii")).decode("ascii")
-    webbrowser.open(f'https://mermaid.ink/img/{b64_mermaid}')
+    if args.mermaid:
+        print(mermaid_diagram)
+    else:
+        print('\n'.join(output))
+
+    if args.open_mermaid:
+        b64_mermaid = base64.b64encode(mermaid_diagram.encode("ascii")).decode("ascii")
+        webbrowser.open(f'https://mermaid.ink/img/{b64_mermaid}')
+
+
+if __name__ == "__main__":
+    main()
