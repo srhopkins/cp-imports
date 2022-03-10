@@ -53,15 +53,15 @@ parser.add_argument("-l", "--logging-level", help="execution logging level", def
 parser.add_argument("-m", "--mermaid", help="output mermaid graph", action=argparse.BooleanOptionalAction, default=False)
 parser.add_argument("-o", "--open-mermaid", help="open mermaid graph in browser", action=argparse.BooleanOptionalAction, default=False)
 
+args = parser.parse_args()
+
+logging.basicConfig(level=args.logging_level.upper())
+logger = logging.getLogger(__name__)
+
+logger.debug(args)
+
 
 def main():
-    args = parser.parse_args()
-
-    logging.basicConfig(level=args.logging_level.upper())
-    logger = logging.getLogger(__name__)
-
-    logger.debug(args)
-
     output, mermaid = walk_imports(args.stack)
 
     mermaid_diagram = f'flowchart {args.flowchart}\n'
