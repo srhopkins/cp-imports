@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='cp-imports',
-    version='0.0.1',
+    version='0.0.2',
     author='Steven Hopkins',
     author_email='srhopkins@gmail.com',
     description='Tools to track Cloud Posse imports in stack configs',
@@ -15,4 +15,9 @@ setuptools.setup(
     license='MIT',
     packages=['cp-imports'],
     install_requires=[],
+    entry_points = {
+        'console_scripts': [
+            'cp-test = package.module:main',
+            ],
+    }
 )
