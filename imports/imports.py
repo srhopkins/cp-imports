@@ -39,7 +39,8 @@ def walk_imports(filename, parents=[], output=[], mermaid=[]):
         short_import_filename = import_filename.replace(args.stack_dir, '')
         short_filename = filename.replace(args.stack_dir, '')
         mermaid.append(f'{short_filename} --> {short_import_filename}')
-        logger.debug(f, parents)
+        logger.debug(f'import: {f}')
+        logger.debug(f'parents: {parents}')
         walk_imports(import_filename, deepcopy(parents), output, mermaid)
     
     return output, mermaid
@@ -58,7 +59,7 @@ args = parser.parse_args()
 logging.basicConfig(level=args.logging_level.upper())
 logger = logging.getLogger(__name__)
 
-logger.debug(args)
+logger.debug(f'args: {args}')
 
 
 def main():
