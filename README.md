@@ -1,6 +1,14 @@
 # cp-imports
 
-Outputs Cloud Posse import chains in stack configs. Both text concatenation and mermaid flowcharts. 
+Outputs Cloud Posse import chains from stack configs. Supports both text concatenation and mermaid flowcharts. 
+
+## Install
+
+```
+pip install --user git+https://github.com/srhopkins/cp-imports.git 
+```
+
+## Example Mermaid Flowchart
 
 ![example audit imports](docs/cptest-cp-imports-audit.jpeg)
 
