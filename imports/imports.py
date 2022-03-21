@@ -10,6 +10,7 @@ import yaml
 
 from os.path import relpath
 from copy import deepcopy
+from collections import defaultdict
 
 
 def generate_stack_filename(filename):
@@ -17,7 +18,16 @@ def generate_stack_filename(filename):
     return relpath(f'{args.stack_dir}/{filename}.yaml')
 
 
-def walk_imports(filename, parents=[], output=[], mermaid=[]):
+def gen_short_name(name, id_num, seen):
+    if not name in seen.keys():
+        id_num += 1
+        ident = f'i{id_num}'
+        seen[name] = ident
+        return f'{ident}["{name}"]', id_num, seen
+    return seen[name], id_num, seen
+
+
+def walk_imports(filename, parents=[], output=[], mermaid=defaultdict(list)):
     parents.append(filename)
     with open(filename) as f:
         body = f.read()
@@ -38,7 +48,7 @@ def walk_imports(filename, parents=[], output=[], mermaid=[]):
         import_filename = generate_stack_filename(f)
         short_import_filename = import_filename.replace(args.stack_dir, '')
         short_filename = filename.replace(args.stack_dir, '')
-        mermaid.append(f'{short_filename} --> {short_import_filename}')
+        mermaid[short_filename].append(short_import_filename)
         logger.debug(f'import: {f}')
         logger.debug(f'parents: {parents}')
         walk_imports(import_filename, deepcopy(parents), output, mermaid)
@@ -66,8 +76,13 @@ def main():
     output, mermaid = walk_imports(args.stack)
 
     mermaid_diagram = f'flowchart {args.flowchart}\n'
-    for row in mermaid:
-        mermaid_diagram += f'    {row}\n'
+    id_num = 0
+    seen = {}
+    for parent, children in mermaid.items():
+        for child in children:
+            c, id_num, seen = gen_short_name(parent, id_num, seen)
+            i, id_num, seen = gen_short_name(child, id_num, seen)
+            mermaid_diagram += f'  {c} --> {i}\n'
 
     if args.mermaid:
         print(mermaid_diagram)

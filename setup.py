@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='cp-imports',
-    version='0.0.6',
+    version='0.0.7',
     author='Steven Hopkins',
     author_email='srhopkins@gmail.com',
     description='Tools to track Cloud Posse imports in stack configs',
